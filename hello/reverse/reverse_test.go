@@ -12,6 +12,7 @@ func TestString(t *testing.T) {
 	}{
 		{"Hello, world", "dlrow ,olleH"},
 		{"Hello, 世界", "界世 ,olleH"},
+		{"Drive", "evirD"},
 		{"", ""},
 	} {
 		got := String(c.in)
