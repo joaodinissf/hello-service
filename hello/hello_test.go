@@ -16,6 +16,9 @@ func TestGreeting(t *testing.T) {
 		{"Hello", "Drive", true, false, "HELLO, DRIVE!"},
 		{"Hello", "Drive", true, true, "OLLEH, EVIRD!"},
 		{"Hello", "Drive", false, true, "olleH, evirD!"},
+		{"Hello", "", false, false, "Hello, !"},
+		{"Hello", "Zoë", false, false, "Hello, Zoë!"},
+		{"Hello", "Zoë", false, true, "olleH, ëoZ!"},
 	} {
 		got := greet(c.greeting, c.name, c.upper, c.reverse)
 		if got != c.want {
