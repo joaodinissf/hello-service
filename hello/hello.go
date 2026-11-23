@@ -17,9 +17,6 @@
 //	-r
 //		Greet in reverse.
 //
-//	-u
-//		Greet in upper case.
-//
 // By default, hello greets the world.
 // If a name is specified, hello greets that name instead.
 package main
@@ -29,7 +26,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strings"
 
 	"golang.org/x/example/hello/reverse"
 )
@@ -43,7 +39,6 @@ func usage() {
 var (
 	greeting    = flag.String("g", "Hello", "Greet with `greeting`")
 	reverseFlag = flag.Bool("r", false, "Greet in reverse")
-	upperFlag   = flag.Bool("u", false, "Greet in upper case")
 )
 
 func main() {
@@ -64,15 +59,14 @@ func main() {
 	if len(args) >= 1 {
 		name = args[0]
 	}
+	if name == "" { // hello '' is an error
+		log.Fatalf("invalid name %q", name)
+	}
 
 	// Run actual logic.
-	greetingText, nameText := *greeting, name
 	if *reverseFlag {
-		nameText = reverse.String(nameText)
+		fmt.Printf("%s, %s!\n", reverse.String(*greeting), reverse.String(name))
+		return
 	}
-	if *upperFlag {
-		greetingText = strings.ToUpper(greetingText)
-		nameText = strings.ToUpper(nameText)
-	}
-	fmt.Printf("%s, %s!\n", greetingText, nameText)
+	fmt.Printf("%s, %s!\n", *greeting, name)
 }
