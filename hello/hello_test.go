@@ -21,6 +21,17 @@ func TestReverseFlag(t *testing.T) {
 	}
 }
 
+func TestEmptyName(t *testing.T) {
+	cmd := exec.Command("go", "run", ".", "")
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		t.Fatalf("hello '': %v\n%s", err, out)
+	}
+	if got := string(out); !strings.Contains(got, "Hello, !") {
+		t.Errorf("hello '' output %q, want it to contain %q", got, "Hello, !")
+	}
+}
+
 func TestUpperFlag(t *testing.T) {
 	cmd := exec.Command("go", "run", ".", "-u", "Drive")
 	out, err := cmd.CombinedOutput()
