@@ -64,9 +64,6 @@ func main() {
 	if len(args) >= 1 {
 		name = args[0]
 	}
-	if name == "" { // hello '' is an error
-		log.Fatalf("invalid name %q", name)
-	}
 
 	// Run actual logic.
 	greetingText, nameText := *greeting, name
