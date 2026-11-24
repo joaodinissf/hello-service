@@ -20,20 +20,27 @@ func TestMainGreeting(t *testing.T) {
 	}
 
 	for _, c := range []struct {
-		name string
-		args []string
-		want string
+		name    string
+		args    []string
+		want    string
+		wantErr bool
 	}{
-		{"reverse", []string{"-r", "Drive"}, "olleH, evirD!\n"},
-		{"plain", []string{"Drive"}, "Hello, Drive!\n"},
-		{"upper", []string{"-u", "Drive"}, "HELLO, DRIVE!\n"},
-		{"upper-reverse", []string{"-u", "-r", "Drive"}, "OLLEH, EVIRD!\n"},
+		{"reverse", []string{"-r", "Drive"}, "olleH, evirD!\n", false},
+		{"plain", []string{"Drive"}, "Hello, Drive!\n", false},
+		{"upper", []string{"-u", "Drive"}, "HELLO, DRIVE!\n", false},
+		{"upper-reverse", []string{"-u", "-r", "Drive"}, "OLLEH, EVIRD!\n", false},
+		{"reverse-multibyte", []string{"-r", "Zoë"}, "olleH, ëoZ!\n", false},
+		{"plain-multibyte", []string{"Zoë"}, "Hello, Zoë!\n", false},
+		{"empty", []string{""}, "hello: invalid name \"\"\n", true},
 	} {
 		t.Run(c.name, func(t *testing.T) {
 			cmd := exec.Command(bin, c.args...)
 			cmd.Env = os.Environ()
 			out, err := cmd.CombinedOutput()
-			if err != nil {
+			if c.wantErr && err == nil {
+				t.Fatalf("%s: expected error, got none\n%s", bin, out)
+			}
+			if !c.wantErr && err != nil {
 				t.Fatalf("%s: %v\n%s", bin, err, out)
 			}
 			if got := string(out); got != c.want {
