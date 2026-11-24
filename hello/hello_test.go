@@ -26,6 +26,8 @@ func TestMainGreeting(t *testing.T) {
 	}{
 		{"reverse", []string{"-r", "Drive"}, "olleH, evirD!\n"},
 		{"plain", []string{"Drive"}, "Hello, Drive!\n"},
+		{"upper", []string{"-u", "Drive"}, "HELLO, DRIVE!\n"},
+		{"upper-reverse", []string{"-u", "-r", "Drive"}, "OLLEH, EVIRD!\n"},
 	} {
 		t.Run(c.name, func(t *testing.T) {
 			cmd := exec.Command(bin, c.args...)
