@@ -21,3 +21,27 @@ func TestReverseFlag(t *testing.T) {
 		t.Errorf("go run . -r Drive == %q, want %q", got, want)
 	}
 }
+
+func TestUpperFlag(t *testing.T) {
+	out, err := exec.Command("go", "run", ".", "-u", "Drive").CombinedOutput()
+	if err != nil {
+		t.Fatalf("go run . -u Drive: %v\n%s", err, out)
+	}
+	got := strings.TrimSpace(string(out))
+	want := "HELLO, DRIVE!"
+	if got != want {
+		t.Errorf("go run . -u Drive == %q, want %q", got, want)
+	}
+}
+
+func TestUpperReverseFlag(t *testing.T) {
+	out, err := exec.Command("go", "run", ".", "-u", "-r", "Drive").CombinedOutput()
+	if err != nil {
+		t.Fatalf("go run . -u -r Drive: %v\n%s", err, out)
+	}
+	got := strings.TrimSpace(string(out))
+	want := "OLLEH, EVIRD!"
+	if got != want {
+		t.Errorf("go run . -u -r Drive == %q, want %q", got, want)
+	}
+}
